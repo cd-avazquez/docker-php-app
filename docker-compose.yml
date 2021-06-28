@@ -1,0 +1,47 @@
+version: '3'
+services:
+    web:
+        restart: always
+        depends_on: 
+            - mysql
+        image: nginx:latest
+        ports: 
+            - '8085:80'
+        volumes: 
+            - ./nginx.conf:/etc/nginx/conf.d/nginx.conf
+            - ./app:/app
+
+    php:
+        restart: always
+        build:
+            context: .
+            dockerfile: PHP.Dockerfile
+        volumes: 
+            - ./app:/app
+
+    mysql:
+        image: mariadb:latest
+        restart: always
+        environment: 
+            MYSQL_ROOT_PASSWORD: 'rootpw'
+            MYSQL_USER: 'dbuser'
+            MYSQL_PASSWORD: 'dbpw'
+            MYSQL_DATABASE: 'db'
+        volumes: 
+            - mysqldata:/var/lib/mysql
+        ports: 
+            - 33068:3306
+
+    phpmyadmin:
+        depends_on: 
+            - mysql
+        image: phpmyadmin/phpmyadmin
+        restart: always
+        ports: 
+            - '8090:80'
+        environment: 
+            PMA_HOST: mysql
+            MYSQL_ROOT_PASSWORD: rootpw
+
+volumes: 
+    mysqldata: {}
