@@ -9,9 +9,9 @@ To use this: docker compose up -d
 
 To remove everything:
 
-docker system prune
-docker system prune -a
-docker system prune --volumes
-docker images purge
-docker container prune
+docker system prune<br>
+docker system prune -a<br>
+docker system prune --volumes<br>
+docker images purge<br>
+docker container prune<br>
 docker volume prune
